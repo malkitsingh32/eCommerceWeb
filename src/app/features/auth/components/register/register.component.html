@@ -1,0 +1,105 @@
+<div class="auth-page">
+  <div class="auth-card">
+    <div class="brand">
+      <div class="logo">E</div>
+      <h1>E-Commerce</h1>
+    </div>
+
+    <form (ngSubmit)="onRegister()" class="auth-form" [formGroup]="registerForm" novalidate>
+      <h2>Create account</h2>
+
+      <label class="field">
+        <span class="label">First Name*</span>
+        <input type="text" formControlName="firstName" required placeholder="Your first name" />
+      </label>
+      @if(registerForm.get('firstName')?.hasError('required') && registerForm.get('firstName')?.touched) {
+      <div class="error">First name is required</div> }
+
+
+      <label class="field">
+        <span class="label">Last Name*</span>
+        <input type="text" formControlName="lastName" required placeholder="Your last name" />
+        @if(registerForm.get('lastName')?.hasError('required') && registerForm.get('lastName')?.touched) {
+        <div class="error">Last name is required</div>
+        }
+      </label>
+
+      <label class="field">
+        <span class="label">Username*</span>
+        <input type="text" formControlName="username" required placeholder="Your username" />
+        @if(registerForm.get('username')?.hasError('required') && registerForm.get('username')?.touched) {
+        <div class="error">Username is required</div>
+        }
+      </label>
+
+      <label class="field">
+        <span class="label">Email*</span>
+        <input type="email" name="email" formControlName="email" required placeholder="you@domain.com" />
+        @if(registerForm.get('email')?.hasError('required') && registerForm.get('email')?.touched) {
+        <div class="error">Email is required</div>
+        }
+        @if(registerForm.get('email')?.hasError('email') && registerForm.get('email')?.touched) {
+        <div class="error">Please enter a valid email address</div>
+        }
+      </label>
+
+      <label class="field">
+  <span class="label">Mobile Number*</span>
+  <input type="tel" formControlName="phone" placeholder="Your phone number" />
+</label>
+
+@if(registerForm.get('phone')?.touched && registerForm.get('phone')?.hasError('required')) {
+  <div class="error">Phone number is required</div>
+}
+
+@if(registerForm.get('phone')?.touched && registerForm.get('phone')?.hasError('invalidPhone')) {
+  <div class="error">Please enter a valid phone number</div>
+}
+
+      <label class="field with-icon">
+        <span class="label">Password*</span>
+        <input [type]="showPassword ? 'text' : 'password'" formControlName="password" required minlength="6"
+          placeholder="Create a password" />
+        <button type="button" class="icon-btn" (click)="togglePassword()" aria-label="Toggle password visibility">
+          <img src="assets/svg/eye.svg" alt="Toggle password visibility" />
+        </button>
+      </label>
+      @if(registerForm.get('password')?.hasError('required') && registerForm.get('password')?.touched) {
+      <div class="error">Password is required</div>
+      }
+      @if(registerForm.get('password')?.hasError('strongPassword') && registerForm.get('password')?.touched) {
+      <div class="error"> Password must contain:
+        <ul>
+          <li>8 characters</li>
+          <li>1 uppercase letter</li>
+          <li>1 lowercase letter</li>
+          <li>1 number</li>
+          <li>1 special character</li>
+        </ul>
+      </div>
+      }
+
+
+      <label class="field with-icon">
+        <span class="label">Confirm password*</span>
+        <input [type]="showConfirm ? 'text' : 'password'" formControlName="confirmPassword" required minlength="6"
+          placeholder="Repeat your password" />
+        <button type="button" class="icon-btn" (click)="toggleConfirm()"
+          aria-label="Toggle confirm password visibility">
+          <img src="assets/svg/eye.svg" alt="Toggle password visibility" />
+        </button>
+      </label>
+      @if(registerForm.get('confirmPassword')?.hasError('required') && registerForm.get('confirmPassword')?.touched) {
+      <div class="error">Confirm password is required</div>
+      }
+      @if(registerForm.errors?.['passwordMismatch'] && registerForm.get('confirmPassword')?.touched) {
+      <div class="error">Passwords do not match</div>
+      }
+
+
+      <app-button type="submit" variant="primary" label="SIGN UP"></app-button>
+    </form>
+
+    <div class="divider">Already have an account? <a routerLink="/login">Sign in</a></div>
+  </div>
+</div>

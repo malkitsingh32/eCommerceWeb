@@ -1,0 +1,22 @@
+<div class="snackbar">
+    <div 
+        class="snackbar_line"
+        [ngClass]="{
+            'snackbar_line--info': data.type === 'info' || !data.type,
+            'snackbar_line--error': data.type === 'error',
+            'snackbar_line--success': data.type === 'success'
+        }"
+    ></div>
+
+    <div class="snackbar_title">{{ data.title }}</div>
+
+    @if (data.message) {
+        <div class="snackbar_message">{{ data.message }}</div>
+    }
+
+    @if (data.action) {
+        <div class="snackbar_action" (click)="actionFn()">
+            {{ data.action }}
+        </div>
+    }
+</div>

@@ -1,0 +1,60 @@
+<div class="auth-page">
+  <div class="auth-card">
+    <div class="brand">
+      <div class="logo">E</div>
+      <h1>E-Commerce</h1>
+    </div>
+
+    <form (ngSubmit)="onLogin()" class="auth-form" #f="ngForm" novalidate>
+      <h2>Sign in</h2>
+
+      <label class="field">
+        <span class="label">Email</span>
+        <input
+          type="email"
+          name="email"
+          [(ngModel)]="email"
+          required
+          email
+          placeholder="you@domain.com"
+          [class.invalid]="f.submitted && !email"
+        />
+      </label>
+
+      <label class="field">
+        <span class="label">Password</span>
+        <div class="password-row">
+          <input
+            [type]="showPassword ? 'text' : 'password'"
+            name="password"
+            [(ngModel)]="password"
+            required
+            minlength="6"
+            placeholder="Enter your password"
+            [class.invalid]="f.submitted && !password"
+          />
+          <button type="button" class="toggle" (click)="togglePassword()" aria-label="Toggle password">
+            {{ showPassword ? 'Hide' : 'Show' }}
+          </button>
+        </div>
+      </label>
+
+      <div class="actions">
+        <label class="remember">
+          <input type="checkbox" [(ngModel)]="remember" name="remember" /> Remember me
+        </label>
+        <a class="link" routerLink="/register">Create account</a>
+      </div>
+
+      <app-button type="submit" variant="primary" label="LOGIN"></app-button>
+
+      <div class="error" *ngIf="error">{{ error }}</div>
+    </form>
+
+    <div class="divider">or</div>
+    <div class="social">
+      <button class="social-btn google">Continue with Google</button>
+      <button class="social-btn github">Continue with GitHub</button>
+    </div>
+  </div>
+</div>

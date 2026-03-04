@@ -1,0 +1,10 @@
+<button
+  [type]="type"
+  [disabled]="disabled"
+  (click)="onClick()"
+  [ngClass]="'btn-' + variant"
+>  @if (icon) {
+  <span  class="material-icons">{{ icon }}</span>
+}
+  {{ label }}
+</button>
