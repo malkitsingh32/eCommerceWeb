@@ -2,14 +2,14 @@ import { Component } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { Button } from '../../../../shared/components/button/button';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
-  imports: [CommonModule, FormsModule,Button]
+  imports: [CommonModule, FormsModule,Button,RouterModule]
 })
 export class LoginComponent {
   email = '';

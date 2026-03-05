@@ -4,6 +4,7 @@ import { AuthService } from "../services/auth.service";
 import { AuthStore } from "../store/auth.store";
 import { LoginRequest } from "../models/login.model";
 import { RegisterRequest } from "../models/register.model";
+import { Router } from "@angular/router";
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +14,8 @@ export class AuthFacade {
   constructor(
     private authService: AuthService,
     private store: AuthStore,
-    private tokenService: TokenService
+    private tokenService: TokenService,
+    private router: Router
   ) {}
 
   login(payload: LoginRequest) {
@@ -34,6 +36,7 @@ export class AuthFacade {
     this.authService.register(payload).subscribe(res => {
       if (res.succeeded) {
         this.store.user.set(res.data);
+        this.router.navigate(['/auth/login']);
       }
       this.store.loading.set(false);
     });

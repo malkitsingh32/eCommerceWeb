@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Snackbar } from '../../../../shared/components/snackbar/snackbar';
 import { Button } from "../../../../shared/components/button/button";
@@ -17,7 +17,7 @@ import { AuthFacade } from '../../fascade/auth.fascade';
   selector: 'app-register',
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.scss'],
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, Button],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, Button,RouterModule],
   providers: [AuthService]
 })
 export class RegisterComponent {
