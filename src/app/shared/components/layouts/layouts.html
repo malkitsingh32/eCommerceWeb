@@ -1,16 +1,13 @@
-<div class="flex h-screen bg-gray-100">
-  <!-- Sidebar -->
-<app-sidebar></app-sidebar>
+<div class="layout-shell">
+  <app-sidebar [collapsed]="isSidebarCollapsed()"></app-sidebar>
 
-  <!-- Main Content -->
-  <div class="flex-1 flex flex-col">
-    <!-- Topbar -->
-    <app-header></app-header>
+  <div class="layout-main">
+    <app-header
+      [isSidebarCollapsed]="isSidebarCollapsed()"
+      (toggleSidebar)="onToggleSidebar()"
+    ></app-header>
 
-
-
-    <!-- Page Content -->
-    <main class="flex-1 overflow-y-auto p-6">
+    <main class="layout-content">
       <router-outlet></router-outlet>
     </main>
   </div>

@@ -1,7 +1,7 @@
 <div class="auth-page">
   <div class="auth-card">
     <div class="brand">
-      <div class="logo">E</div>
+      <img class="logo-img" src="assets/images/logo-mark.svg" alt="E-Commerce logo" />
       <h1>E-Commerce</h1>
     </div>
 
@@ -19,29 +19,29 @@
       <label class="field">
         <span class="label">Last Name*</span>
         <input type="text" formControlName="lastName" required placeholder="Your last name" />
-        @if(registerForm.get('lastName')?.hasError('required') && registerForm.get('lastName')?.touched) {
-        <div class="error">Last name is required</div>
-        }
       </label>
+      @if(registerForm.get('lastName')?.hasError('required') && registerForm.get('lastName')?.touched) {
+      <div class="error">Last name is required</div>
+      }
 
       <label class="field">
         <span class="label">Username*</span>
         <input type="text" formControlName="username" required placeholder="Your username" />
-        @if(registerForm.get('username')?.hasError('required') && registerForm.get('username')?.touched) {
-        <div class="error">Username is required</div>
-        }
       </label>
+      @if(registerForm.get('username')?.hasError('required') && registerForm.get('username')?.touched) {
+      <div class="error">Username is required</div>
+      }
 
       <label class="field">
         <span class="label">Email*</span>
         <input type="email" name="email" formControlName="email" required placeholder="you@domain.com" />
-        @if(registerForm.get('email')?.hasError('required') && registerForm.get('email')?.touched) {
-        <div class="error">Email is required</div>
-        }
-        @if(registerForm.get('email')?.hasError('email') && registerForm.get('email')?.touched) {
-        <div class="error">Please enter a valid email address</div>
-        }
       </label>
+      @if(registerForm.get('email')?.hasError('required') && registerForm.get('email')?.touched) {
+      <div class="error">Email is required</div>
+      }
+      @if(registerForm.get('email')?.hasError('email') && registerForm.get('email')?.touched) {
+      <div class="error">Please enter a valid email address</div>
+      }
 
       <label class="field">
   <span class="label">Mobile Number*</span>
@@ -61,20 +61,30 @@
         <input [type]="showPassword ? 'text' : 'password'" formControlName="password" required minlength="6"
           placeholder="Create a password" />
         <button type="button" class="icon-btn" (click)="togglePassword()" aria-label="Toggle password visibility">
-          <img src="assets/svg/eye.svg" alt="Toggle password visibility" />
+          <img [src]="showPassword ? 'assets/svg/eye-closed.svg' : 'assets/svg/eye-open.svg'" alt="Toggle password visibility" />
         </button>
       </label>
       @if(registerForm.get('password')?.hasError('required') && registerForm.get('password')?.touched) {
       <div class="error">Password is required</div>
       }
-      @if(registerForm.get('password')?.hasError('strongPassword') && registerForm.get('password')?.touched) {
-      <div class="error"> Password must contain:
+      @if(registerForm.get('password')?.touched && !registerForm.get('password')?.hasError('required') && registerForm.get('password')?.invalid) {
+      <div class="error">Password must contain:
         <ul>
+          @if(registerForm.get('password')?.hasError('minLength')) {
           <li>8 characters</li>
+          }
+          @if(registerForm.get('password')?.hasError('noUpperCase')) {
           <li>1 uppercase letter</li>
+          }
+          @if(registerForm.get('password')?.hasError('noLowerCase')) {
           <li>1 lowercase letter</li>
+          }
+          @if(registerForm.get('password')?.hasError('noNumber')) {
           <li>1 number</li>
+          }
+          @if(registerForm.get('password')?.hasError('noSpecialChar')) {
           <li>1 special character</li>
+          }
         </ul>
       </div>
       }
@@ -86,7 +96,7 @@
           placeholder="Repeat your password" />
         <button type="button" class="icon-btn" (click)="toggleConfirm()"
           aria-label="Toggle confirm password visibility">
-          <img src="assets/svg/eye.svg" alt="Toggle password visibility" />
+          <img [src]="showConfirm ? 'assets/svg/eye-closed.svg' : 'assets/svg/eye-open.svg'" alt="Toggle confirm password visibility" />
         </button>
       </label>
       @if(registerForm.get('confirmPassword')?.hasError('required') && registerForm.get('confirmPassword')?.touched) {

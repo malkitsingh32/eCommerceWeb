@@ -1,20 +1,72 @@
-aside {
-  width: 250px;
-  background-color: #343a40;
-  color: #fff;
-  padding: 1rem;
+.app-sidebar {
+  width: 260px;
+  min-height: 100vh;
+  background: #ffffff;
+  border-right: 1px solid #e6edf3;
+  padding: 1rem 0.75rem;
+  box-sizing: border-box;
+  transition: width 0.25s ease, padding 0.25s ease;
 }
 
-nav ul {
-  list-style: none;
-  padding: 0;
+.app-sidebar.collapsed {
+  width: 76px;
+  padding: 1rem 0.5rem;
 }
 
-nav ul li {
-  margin: 0.5rem 0;
+.sidebar-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.4rem 0.65rem 1rem;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #0f1724;
 }
 
-nav ul li a {
-  color: #fff;
+.sidebar-brand img {
+  border-radius: 8px;
+}
+
+.sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.65rem 0.7rem;
+  border-radius: 10px;
+  color: #334155;
   text-decoration: none;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.nav-item:hover {
+  background: #f8fafc;
+  color: #0f1724;
+}
+
+.nav-item.active {
+  background: linear-gradient(90deg, rgba(124, 58, 237, 0.12), rgba(6, 182, 212, 0.12));
+  color: #0f1724;
+  font-weight: 700;
+}
+
+.icon {
+  width: 20px;
+  text-align: center;
+}
+
+.app-sidebar.collapsed .sidebar-brand {
+  justify-content: center;
+  padding-inline: 0;
+}
+
+.app-sidebar.collapsed .nav-item {
+  justify-content: center;
+  padding-inline: 0.4rem;
 }

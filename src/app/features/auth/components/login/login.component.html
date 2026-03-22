@@ -1,54 +1,76 @@
 <div class="auth-page">
   <div class="auth-card">
     <div class="brand">
-      <div class="logo">E</div>
+      <img class="logo-img" src="assets/images/logo-mark.svg" alt="E-Commerce logo" />
       <h1>E-Commerce</h1>
     </div>
 
-    <form (ngSubmit)="onLogin()" class="auth-form" #f="ngForm" novalidate>
+    <form (ngSubmit)="onLogin()" class="auth-form" [formGroup]="loginForm" novalidate>
       <h2>Sign in</h2>
 
       <label class="field">
-        <span class="label">Email</span>
+        <span class="label">Email*</span>
         <input
           type="email"
-          name="email"
-          [(ngModel)]="email"
-          required
-          email
+          formControlName="email"
           placeholder="you@domain.com"
-          [class.invalid]="f.submitted && !email"
         />
       </label>
+      @if(loginForm.get('email')?.hasError('required') && loginForm.get('email')?.touched) {
+      <div class="error">Email is required</div>
+      }
+      @if(loginForm.get('email')?.hasError('email') && loginForm.get('email')?.touched) {
+      <div class="error">Please enter a valid email address</div>
+      }
 
-      <label class="field">
-        <span class="label">Password</span>
-        <div class="password-row">
-          <input
-            [type]="showPassword ? 'text' : 'password'"
-            name="password"
-            [(ngModel)]="password"
-            required
-            minlength="6"
-            placeholder="Enter your password"
-            [class.invalid]="f.submitted && !password"
-          />
-          <button type="button" class="toggle" (click)="togglePassword()" aria-label="Toggle password">
-            {{ showPassword ? 'Hide' : 'Show' }}
-          </button>
-        </div>
+      <label class="field with-icon">
+        <span class="label">Password*</span>
+        <input
+          [type]="showPassword ? 'text' : 'password'"
+          formControlName="password"
+          placeholder="Enter your password"
+        />
+        <button type="button" class="icon-btn" (click)="togglePassword()" aria-label="Toggle password">
+          <img [src]="showPassword ? 'assets/svg/eye-closed.svg' : 'assets/svg/eye-open.svg'" alt="Toggle password visibility" />
+        </button>
       </label>
+      @if(loginForm.get('password')?.hasError('required') && loginForm.get('password')?.touched) {
+      <div class="error">Password is required</div>
+      }
+      @if(loginForm.get('password')?.touched && !loginForm.get('password')?.hasError('required') && loginForm.get('password')?.invalid) {
+      <div class="error">Password must contain:
+        <ul>
+          @if(loginForm.get('password')?.hasError('minLength')) {
+          <li>8 characters</li>
+          }
+          @if(loginForm.get('password')?.hasError('noUpperCase')) {
+          <li>1 uppercase letter</li>
+          }
+          @if(loginForm.get('password')?.hasError('noLowerCase')) {
+          <li>1 lowercase letter</li>
+          }
+          @if(loginForm.get('password')?.hasError('noNumber')) {
+          <li>1 number</li>
+          }
+          @if(loginForm.get('password')?.hasError('noSpecialChar')) {
+          <li>1 special character</li>
+          }
+        </ul>
+      </div>
+      }
 
       <div class="actions">
         <label class="remember">
-          <input type="checkbox" [(ngModel)]="remember" name="remember" /> Remember me
+          <input type="checkbox" [(ngModel)]="remember" [ngModelOptions]="{standalone: true}" /> Remember me
         </label>
         <a class="link" routerLink="/register">Create account</a>
       </div>
 
       <app-button type="submit" variant="primary" label="LOGIN"></app-button>
 
-      <div class="error" *ngIf="error">{{ error }}</div>
+      @if(error) {
+      <div class="error">{{ error }}</div>
+      }
     </form>
 
     <div class="divider">or</div>

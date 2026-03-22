@@ -1,0 +1,30 @@
+<div class="grid-toolbar">
+  <div class="toolbar-left">
+    <span class="grid-title" *ngIf="title">{{ title }}</span>
+  </div>
+
+  <div class="toolbar-right">
+    <input
+      *ngIf="enableSearch"
+      class="search-input"
+      type="text"
+      placeholder="Quick search..."
+      (input)="onSearch($event)"
+    />
+
+    <button class="toolbar-btn" title="Clear Filters" (click)="clearFilters.emit()">
+      🔄 Clear Filters
+    </button>
+    <button class="toolbar-btn" title="Auto-Size Columns" (click)="autoSize.emit()">
+      ↔ Auto Size
+    </button>
+    <button class="toolbar-btn" title="Refresh" (click)="refresh.emit()">
+      ↺ Refresh
+    </button>
+
+    <ng-container *ngIf="enableExport">
+      <button class="toolbar-btn export-btn" (click)="exportCsv.emit()">⬇ CSV</button>
+      <button class="toolbar-btn export-btn" (click)="exportExcel.emit()">⬇ Excel</button>
+    </ng-container>
+  </div>
+</div>

@@ -1,0 +1,52 @@
+.grid-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 16px;
+  background: #f8f9fa;
+  border-bottom: 1px solid #e0e0e0;
+  gap: 8px;
+  flex-wrap: wrap;
+
+  .grid-title {
+    font-weight: 600;
+    font-size: 15px;
+    color: #333;
+  }
+
+  .toolbar-right {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .search-input {
+    padding: 6px 12px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 13px;
+    outline: none;
+    min-width: 200px;
+    transition: border-color 0.2s;
+    &:focus { border-color: #1976d2; }
+  }
+
+  .toolbar-btn {
+    padding: 6px 12px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    background: #fff;
+    cursor: pointer;
+    font-size: 13px;
+    transition: all 0.2s;
+    white-space: nowrap;
+    &:hover { background: #e3f2fd; border-color: #1976d2; color: #1976d2; }
+    &.export-btn {
+      background: #e8f5e9;
+      border-color: #43a047;
+      color: #2e7d32;
+      &:hover { background: #c8e6c9; }
+    }
+  }
+}

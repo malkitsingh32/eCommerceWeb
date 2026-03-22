@@ -1,5 +1,85 @@
-header {
-  background-color: #f8f9fa;
-  padding: 1rem;
-  text-align: center;
+.app-header {
+  height: 64px;
+  background: #ffffff;
+  border-bottom: 1px solid #e6edf3;
+  padding: 0 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.header-left,
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.menu-btn,
+.action-btn {
+  width: 36px;
+  height: 36px;
+  border: 1px solid #e6edf3;
+  border-radius: 10px;
+  background: #fff;
+  cursor: pointer;
+}
+
+.menu-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #334155;
+  background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+  transition: all 0.2s ease;
+}
+
+.menu-btn:hover {
+  border-color: #cbd5e1;
+  color: #0f1724;
+  box-shadow: 0 4px 14px rgba(15, 23, 36, 0.08);
+}
+
+.menu-btn:active {
+  transform: scale(0.98);
+}
+
+.menu-btn svg {
+  width: 19px;
+  height: 19px;
+  transition: transform 0.2s ease;
+}
+
+.menu-btn:hover svg {
+  transform: scale(1.05);
+}
+
+.user-btn {
+  border: 1px solid #e6edf3;
+  background: #fff;
+  border-radius: 999px;
+  padding: 0.25rem 0.65rem 0.25rem 0.25rem;
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  cursor: pointer;
+}
+
+.avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(90deg, #7c3aed, #06b6d4);
+  color: #fff;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.name {
+  color: #0f1724;
+  font-size: 0.9rem;
+  font-weight: 600;
 }

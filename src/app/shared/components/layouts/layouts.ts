@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { SidebarComponent } from "../sidebar/sidebar.component";
 import { HeaderComponent } from "../header/header.component";
 import { RouterModule } from '@angular/router';
@@ -9,4 +9,10 @@ import { RouterModule } from '@angular/router';
   templateUrl: './layouts.html',
   styleUrl: './layouts.scss',
 })
-export class Layouts {}
+export class Layouts {
+  readonly isSidebarCollapsed = signal(false);
+
+  onToggleSidebar(): void {
+    this.isSidebarCollapsed.update((value) => !value);
+  }
+}

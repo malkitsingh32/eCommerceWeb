@@ -1,0 +1,28 @@
+<div class="grid-wrapper">
+  <app-grid-toolbar
+    [title]="title"
+    [enableSearch]="toolbarSearch"
+    [enableExport]="toolbarExport"
+    (searchChange)="onSearchChange($event)"
+    (exportCsv)="exportCsv()"
+    (exportExcel)="exportExcel()"
+    (clearFilters)="clearFilters()"
+    (refresh)="refreshGrid()"
+    (autoSize)="autoSizeAllColumns()"
+  />
+
+  <ag-grid-angular
+    #agGrid
+    class="ag-theme-alpine grid-container"
+    [style.height]="gridHeight"
+    [gridOptions]="gridOptions"
+    [rowData]="rowData"
+    [loading]="loading"
+    (gridReady)="onGridReady($event)"
+    (selectionChanged)="onSelectionChanged($event)"
+    (rowDoubleClicked)="onRowDoubleClicked($event)"
+    (cellValueChanged)="onCellValueChanged($event)"
+    (filterChanged)="onFilterChanged($event)"
+    (sortChanged)="onSortChanged($event)"
+  />
+</div>

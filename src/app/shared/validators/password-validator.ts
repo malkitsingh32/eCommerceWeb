@@ -9,19 +9,24 @@ export function strongPasswordValidator(): ValidatorFn {
       return null;
     }
 
-    const hasUpperCase = /[A-Z]/.test(value);
-    const hasLowerCase = /[a-z]/.test(value);
-    const hasNumeric = /[0-9]/.test(value);
-    const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(value);
-    const hasMinLength = value.length >= 8;
+    const errors: ValidationErrors = {};
 
-    const passwordValid =
-      hasUpperCase &&
-      hasLowerCase &&
-      hasNumeric &&
-      hasSpecialChar &&
-      hasMinLength;
+    if (value.length < 8) {
+      errors['minLength'] = true;
+    }
+    if (!/[A-Z]/.test(value)) {
+      errors['noUpperCase'] = true;
+    }
+    if (!/[a-z]/.test(value)) {
+      errors['noLowerCase'] = true;
+    }
+    if (!/[0-9]/.test(value)) {
+      errors['noNumber'] = true;
+    }
+    if (!/[!@#$%^&*(),.?":{}|<>]/.test(value)) {
+      errors['noSpecialChar'] = true;
+    }
 
-    return passwordValid ? null : { strongPassword: true };
+    return Object.keys(errors).length ? errors : null;
   };
 }

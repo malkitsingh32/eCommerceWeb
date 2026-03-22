@@ -8,6 +8,12 @@ export const API_ENDPOINTS = {
   USERS: {
     GET_ALL: 'api/users',
     GET_BY_ID: 'api/users'
+  },
+
+  PRODUCTS: {
+    GETALL: 'product/GetProducts',
+    GETBYID: 'product/productById',
+    CREATEUPDATE: 'product/CreateUpdateProduct',
   }
 
 };

@@ -1,64 +1,37 @@
-div {
-  max-width: 400px;
-  margin: 0 auto;
-  padding: 1rem;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-}
 
-h2 {
-  text-align: center;
-}
-
-label {
-  display: block;
-  margin-top: 1rem;
-}
-
-input {
-  width: 100%;
-  padding: 0.5rem;
-  margin-top: 0.5rem;
-}
-
-button {
-  display: block;
-  width: 100%;
-  padding: 0.5rem;
-  margin-top: 1rem;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-button:hover {
-  background-color: #0056b3;
-}
 /* reuse styles similar to login for consistent UI */
 :root{--muted:#9ca3af}
 .auth-page{min-height:60vh;display:flex;align-items:center;justify-content:center;padding:2rem}
 .auth-card{width:100%;max-width:420px;background:#fff;border-radius:12px;padding:2rem;box-shadow:0 6px 24px rgba(15,23,36,0.06)}
 .brand{display:flex;align-items:center;gap:.75rem;margin-bottom:1rem}
-.logo{width:44px;height:44px;border-radius:10px;background:linear-gradient(90deg,#7c3aed,#06b6d4);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700}
+.logo-img{width:44px;height:44px;display:block;border-radius:10px;object-fit:contain}
 .auth-form h2{margin:0 0 1rem 0}
 .field{display:block;margin-bottom:.75rem}
 .label{display:block;color:var(--muted);font-size:.85rem;margin-bottom:.25rem}
-.field input{width:100%;padding:.75rem;border-radius:8px;border:1px solid #e6edf3;background:#fbfdff}
+.field input{width:100%;padding:.75rem;border-radius:8px;border:1px solid #e6edf3;background:#fbfdff;box-sizing:border-box}
 .password-row{display:flex;gap:.5rem}
 .toggle{background:transparent;border:none;color:#2563eb;cursor:pointer;padding:.5rem;border-radius:6px}
 
 /* input with inline icon */
-.with-icon{position:relative}
-.with-icon input{width:100%;padding:.75rem;border-radius:8px;border:1px solid #e6edf3;background:#fbfdff;}
-.icon-btn{position:absolute;right:8px;top:50%;transform:translateY(-50%);border:0;background:transparent;display:flex;align-items:center;justify-content:center;padding:6px;border-radius:6px;cursor:pointer;width:32px;height:32px}
-.icon-btn img{opacity:.9;width:18px;height:18px}
+.with-icon{position:relative;overflow:hidden}
+.with-icon input{width:100%;padding:.75rem 2.5rem .75rem .75rem;border-radius:8px;border:1px solid #e6edf3;background:#fbfdff;box-sizing:border-box}
+.icon-btn{position:absolute;right:8px;bottom:8px;border:0;background:transparent;display:flex;align-items:center;justify-content:center;padding:6px;border-radius:6px;cursor:pointer;width:32px;height:32px}
+.icon-btn img{opacity:.7;width:18px;height:18px;display:block}
+.icon-btn:hover img{opacity:1}
 .icon-btn:focus{outline:none}
 .field .mismatch{color:#b91c1c;font-size:.85rem;margin-top:.35rem}
 .submit{width:100%;padding:.9rem;border-radius:10px;background:linear-gradient(90deg,#7c3aed,#06b6d4);color:#fff;border:none;cursor:pointer;font-weight:600}
 .divider{margin-top:1rem;text-align:center;color:var(--muted)}
-.error{color:#b91c1c;font-size:.9rem}
+.error{
+  color:#b91c1c;
+  font-size:.8rem;
+  margin-top:-0.4rem;
+  margin-bottom:0.5rem;
+  padding:0;
+  border:none;
+  background:none;
+  box-shadow:none;
+}
 
 /* remove default focus outlines that cause blue line on page */
 .auth-form input:focus,
