@@ -14,6 +14,10 @@ export const API_ENDPOINTS = {
     GETALL: 'product/GetProducts',
     GETBYID: 'product/productById',
     CREATEUPDATE: 'product/CreateUpdateProduct',
+    DELETE: 'product/DeleteProduct',
+  },
+   CATEGORY: {
+    GETCATEGORIES: 'category/GetCategories',
   }
 
 };

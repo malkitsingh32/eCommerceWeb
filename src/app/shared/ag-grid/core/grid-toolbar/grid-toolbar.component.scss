@@ -22,31 +22,22 @@
   }
 
   .search-input {
-    padding: 6px 12px;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    font-size: 13px;
-    outline: none;
     min-width: 200px;
-    transition: border-color 0.2s;
-    &:focus { border-color: #1976d2; }
+    width: 240px;
   }
 
   .toolbar-btn {
-    padding: 6px 12px;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    background: #fff;
-    cursor: pointer;
-    font-size: 13px;
-    transition: all 0.2s;
     white-space: nowrap;
-    &:hover { background: #e3f2fd; border-color: #1976d2; color: #1976d2; }
-    &.export-btn {
-      background: #e8f5e9;
-      border-color: #43a047;
-      color: #2e7d32;
-      &:hover { background: #c8e6c9; }
-    }
   }
+
+  .export-btn {
+    border-color: #43a047;
+    color: #2e7d32;
+    background: #e8f5e9;
+  }
+}
+
+:host ::ng-deep .grid-toolbar .search-input .mat-mdc-form-field-infix {
+  padding-left: 10px !important;
+  padding-right: 10px !important;
 }

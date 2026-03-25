@@ -1,10 +1,103 @@
-<button
-  [type]="type"
-  [disabled]="disabled"
-  (click)="onClick()"
-  [ngClass]="'btn-' + variant"
->  @if (icon) {
-  <span  class="material-icons">{{ icon }}</span>
+@if (materialStyle === 'icon') {
+  <button
+    mat-icon-button
+    [type]="type"
+    [disabled]="disabled"
+    (click)="onClick($event)"
+    [class]="buttonClass"
+    [style.width]="fullWidth ? '100%' : null"
+    [attr.title]="title || null"
+    [attr.aria-label]="ariaLabel || null"
+    [attr.aria-expanded]="ariaExpanded"
+    [color]="materialColor"
+  >
+    @if (iconSrc) {
+      <img class="btn-icon-img" [src]="iconSrc" [alt]="iconAlt" />
+    }
+    @if (icon && !iconSrc) {
+      <span class="material-icons">{{ icon }}</span>
+    }
+    <ng-content></ng-content>
+  </button>
+} @else if (materialStyle === 'raised') {
+  <button
+    mat-raised-button
+    [type]="type"
+    [disabled]="disabled"
+    (click)="onClick($event)"
+    [class]="buttonClass"
+    [class.btn-primary]="variant === 'primary'"
+    [class.btn-secondary]="variant === 'secondary'"
+    [class.btn-danger]="variant === 'danger'"
+    [style.width]="fullWidth ? '100%' : null"
+    [attr.title]="title || null"
+    [attr.aria-label]="ariaLabel || null"
+    [attr.aria-expanded]="ariaExpanded"
+    [color]="materialColor"
+  >
+    @if (iconSrc) {
+      <img class="btn-icon-img" [src]="iconSrc" [alt]="iconAlt" />
+    }
+    @if (icon && !iconSrc) {
+      <span class="material-icons">{{ icon }}</span>
+    }
+    @if (label) {
+      {{ label }}
+    }
+    <ng-content></ng-content>
+  </button>
+} @else if (materialStyle === 'stroked') {
+  <button
+    mat-stroked-button
+    [type]="type"
+    [disabled]="disabled"
+    (click)="onClick($event)"
+    [class]="buttonClass"
+    [class.btn-primary]="variant === 'primary'"
+    [class.btn-secondary]="variant === 'secondary'"
+    [class.btn-danger]="variant === 'danger'"
+    [style.width]="fullWidth ? '100%' : null"
+    [attr.title]="title || null"
+    [attr.aria-label]="ariaLabel || null"
+    [attr.aria-expanded]="ariaExpanded"
+    [color]="materialColor"
+  >
+    @if (iconSrc) {
+      <img class="btn-icon-img" [src]="iconSrc" [alt]="iconAlt" />
+    }
+    @if (icon && !iconSrc) {
+      <span class="material-icons">{{ icon }}</span>
+    }
+    @if (label) {
+      {{ label }}
+    }
+    <ng-content></ng-content>
+  </button>
+} @else {
+  <button
+    mat-flat-button
+    [type]="type"
+    [disabled]="disabled"
+    (click)="onClick($event)"
+    [class]="buttonClass"
+    [class.btn-primary]="variant === 'primary'"
+    [class.btn-secondary]="variant === 'secondary'"
+    [class.btn-danger]="variant === 'danger'"
+    [style.width]="fullWidth ? '100%' : null"
+    [attr.title]="title || null"
+    [attr.aria-label]="ariaLabel || null"
+    [attr.aria-expanded]="ariaExpanded"
+    [color]="materialColor"
+  >
+    @if (iconSrc) {
+      <img class="btn-icon-img" [src]="iconSrc" [alt]="iconAlt" />
+    }
+    @if (icon && !iconSrc) {
+      <span class="material-icons">{{ icon }}</span>
+    }
+    @if (label) {
+      {{ label }}
+    }
+    <ng-content></ng-content>
+  </button>
 }
-  {{ label }}
-</button>

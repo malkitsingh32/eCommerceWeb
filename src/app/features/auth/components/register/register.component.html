@@ -1,5 +1,5 @@
 <div class="auth-page">
-  <div class="auth-card">
+  <mat-card class="auth-card">
     <div class="brand">
       <img class="logo-img" src="assets/images/logo-mark.svg" alt="E-Commerce logo" />
       <h1>E-Commerce</h1>
@@ -8,34 +8,34 @@
     <form (ngSubmit)="onRegister()" class="auth-form" [formGroup]="registerForm" novalidate>
       <h2>Create account</h2>
 
-      <label class="field">
-        <span class="label">First Name*</span>
-        <input type="text" formControlName="firstName" required placeholder="Your first name" />
-      </label>
+      <mat-form-field class="field" appearance="outline" subscriptSizing="dynamic">
+        <mat-label>First Name*</mat-label>
+        <input matInput type="text" formControlName="firstName" placeholder="Your first name" />
+      </mat-form-field>
       @if(registerForm.get('firstName')?.hasError('required') && registerForm.get('firstName')?.touched) {
       <div class="error">First name is required</div> }
 
 
-      <label class="field">
-        <span class="label">Last Name*</span>
-        <input type="text" formControlName="lastName" required placeholder="Your last name" />
-      </label>
+      <mat-form-field class="field" appearance="outline" subscriptSizing="dynamic">
+        <mat-label>Last Name*</mat-label>
+        <input matInput type="text" formControlName="lastName" placeholder="Your last name" />
+      </mat-form-field>
       @if(registerForm.get('lastName')?.hasError('required') && registerForm.get('lastName')?.touched) {
       <div class="error">Last name is required</div>
       }
 
-      <label class="field">
-        <span class="label">Username*</span>
-        <input type="text" formControlName="username" required placeholder="Your username" />
-      </label>
+      <mat-form-field class="field" appearance="outline" subscriptSizing="dynamic">
+        <mat-label>Username*</mat-label>
+        <input matInput type="text" formControlName="username" placeholder="Your username" />
+      </mat-form-field>
       @if(registerForm.get('username')?.hasError('required') && registerForm.get('username')?.touched) {
       <div class="error">Username is required</div>
       }
 
-      <label class="field">
-        <span class="label">Email*</span>
-        <input type="email" name="email" formControlName="email" required placeholder="you@domain.com" />
-      </label>
+      <mat-form-field class="field" appearance="outline" subscriptSizing="dynamic">
+        <mat-label>Email*</mat-label>
+        <input matInput type="email" name="email" formControlName="email" autocomplete="email" placeholder="you@domain.com" />
+      </mat-form-field>
       @if(registerForm.get('email')?.hasError('required') && registerForm.get('email')?.touched) {
       <div class="error">Email is required</div>
       }
@@ -43,10 +43,10 @@
       <div class="error">Please enter a valid email address</div>
       }
 
-      <label class="field">
-  <span class="label">Mobile Number*</span>
-  <input type="tel" formControlName="phone" placeholder="Your phone number" />
-</label>
+      <mat-form-field class="field" appearance="outline" subscriptSizing="dynamic">
+        <mat-label>Mobile Number*</mat-label>
+        <input matInput type="tel" formControlName="phone" placeholder="Your phone number" />
+      </mat-form-field>
 
 @if(registerForm.get('phone')?.touched && registerForm.get('phone')?.hasError('required')) {
   <div class="error">Phone number is required</div>
@@ -56,20 +56,29 @@
   <div class="error">Please enter a valid phone number</div>
 }
 
-      <label class="field with-icon">
-        <span class="label">Password*</span>
-        <input [type]="showPassword ? 'text' : 'password'" formControlName="password" required minlength="6"
+      <mat-form-field class="field" appearance="outline" subscriptSizing="dynamic">
+        <mat-label>Password*</mat-label>
+        <input matInput [type]="showPassword ? 'text' : 'password'" formControlName="password"
+          autocomplete="new-password"
           placeholder="Create a password" />
-        <button type="button" class="icon-btn" (click)="togglePassword()" aria-label="Toggle password visibility">
-          <img [src]="showPassword ? 'assets/svg/eye-closed.svg' : 'assets/svg/eye-open.svg'" alt="Toggle password visibility" />
-        </button>
-      </label>
+        <app-button
+          matSuffix
+          materialStyle="icon"
+          type="button"
+          buttonClass="icon-btn"
+          [fullWidth]="false"
+          [ariaLabel]="'Toggle password visibility'"
+          [iconSrc]="showPassword ? 'assets/svg/eye-closed.svg' : 'assets/svg/eye-open.svg'"
+          iconAlt="Toggle password visibility"
+          (clicked)="togglePassword()"
+        ></app-button>
+      </mat-form-field>
       @if(registerForm.get('password')?.hasError('required') && registerForm.get('password')?.touched) {
       <div class="error">Password is required</div>
       }
       @if(registerForm.get('password')?.touched && !registerForm.get('password')?.hasError('required') && registerForm.get('password')?.invalid) {
-      <div class="error">Password must contain:
-        <ul>
+      <div class="error password-error">Password must contain:
+        <ul class="password-rules">
           @if(registerForm.get('password')?.hasError('minLength')) {
           <li>8 characters</li>
           }
@@ -90,15 +99,23 @@
       }
 
 
-      <label class="field with-icon">
-        <span class="label">Confirm password*</span>
-        <input [type]="showConfirm ? 'text' : 'password'" formControlName="confirmPassword" required minlength="6"
+      <mat-form-field class="field" appearance="outline" subscriptSizing="dynamic">
+        <mat-label>Confirm password*</mat-label>
+        <input matInput [type]="showConfirm ? 'text' : 'password'" formControlName="confirmPassword"
+          autocomplete="new-password"
           placeholder="Repeat your password" />
-        <button type="button" class="icon-btn" (click)="toggleConfirm()"
-          aria-label="Toggle confirm password visibility">
-          <img [src]="showConfirm ? 'assets/svg/eye-closed.svg' : 'assets/svg/eye-open.svg'" alt="Toggle confirm password visibility" />
-        </button>
-      </label>
+        <app-button
+          matSuffix
+          materialStyle="icon"
+          type="button"
+          buttonClass="icon-btn"
+          [fullWidth]="false"
+          [ariaLabel]="'Toggle confirm password visibility'"
+          [iconSrc]="showConfirm ? 'assets/svg/eye-closed.svg' : 'assets/svg/eye-open.svg'"
+          iconAlt="Toggle confirm password visibility"
+          (clicked)="toggleConfirm()"
+        ></app-button>
+      </mat-form-field>
       @if(registerForm.get('confirmPassword')?.hasError('required') && registerForm.get('confirmPassword')?.touched) {
       <div class="error">Confirm password is required</div>
       }
@@ -107,9 +124,9 @@
       }
 
 
-      <app-button type="submit" variant="primary" label="SIGN UP"></app-button>
+      <app-button materialStyle="raised" type="submit" variant="primary" buttonClass="submit-btn" label="SIGN UP"></app-button>
     </form>
 
     <div class="divider">Already have an account? <a style="cursor: pointer;" routerLink="/login">Sign in</a></div>
-  </div>
+  </mat-card>
 </div>

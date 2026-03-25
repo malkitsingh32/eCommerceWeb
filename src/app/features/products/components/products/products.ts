@@ -1,13 +1,14 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { GenericGridComponent } from '../../../../shared/ag-grid/core/generic-grid/generic-grid.component';
 import { GenericGridConfig } from '../../../../shared/ag-grid/config/grid-config.service';
-import { ProductsFascade } from '../../fascade/products.fascade';
 import { GridDatasourceService } from '../../../../shared/ag-grid/config/grid-datasource.service';
-import { ProductsService } from '../../services/products.services';
 import { Product } from '../../models/products.model';
-import { BadgeCellRendererComponent } from '../../../../shared/ag-grid/cell-renderers/badge-cell-renderer.component';
-import { map } from 'rxjs';
-import { ActionCellRendererComponent } from '../../../../shared/ag-grid/cell-renderers/action-cell-renderer.component';
+import { filter, switchMap } from 'rxjs';
+import { DialogService } from '../../../../shared/components/dialog/dialog.service';
+import { MatDialog } from '@angular/material/dialog';
+import { ProductUpsertDialogComponent } from '../product-upsert-dialog/product-upsert-dialog';
+import { GridApi } from 'ag-grid-community';
+import { ProductsFascade } from '../../fascade/products.fascade';
 
 @Component({
   selector: 'app-products',
@@ -16,66 +17,148 @@ import { ActionCellRendererComponent } from '../../../../shared/ag-grid/cell-ren
   styleUrl: './products.css',
 })
 export class Products implements OnInit {
-   isLoading = false;
-  products: any[] = [];
-gridConfig!: GenericGridConfig;
- private datasourceSvc = inject(GridDatasourceService);
- private productsService = inject(ProductsService);
-  
+  gridConfig!: GenericGridConfig;
 
-  constructor(private productsFascade: ProductsFascade) {
-   
-  }
+  private readonly datasourceSvc = inject(GridDatasourceService);
+  private readonly productsFascade = inject(ProductsFascade);
+  private readonly dialogService = inject(DialogService);
+  private readonly dialog = inject(MatDialog);
+
+  private gridApi?: GridApi;
+
   ngOnInit(): void {
-   this.gridConfig = {
+    this.gridConfig = {
       rowModelType: 'infinite',
       infiniteScroll: true,
       cacheBlockSize: 50,
- 
+      onGridReady: (api) => {
+        this.gridApi = api;
+      },
       infiniteDatasource: this.datasourceSvc.buildInfinite<Product>(
-        // Your API returns { data: Order[], total: number } — pass it directly
-        (req) => this.productsService.getProducts(req).pipe(
-          map((res) => ({
-            data: res.data?.productList ?? [],
-            total: res.data?.totalRecords ?? 0,
-          }))
-        )
+        (req) => this.productsFascade.getProducts(req)
       ),
  
       columnDefs: [
-        { headerName: 'Product Id',  field: 'productId', width: 130 },
-        { headerName: 'Product Name', field: 'productName',    minWidth: 160 },
-        { headerName: 'Sku', field: 'sku',    minWidth: 160 },
-        { headerName: 'Description', field: 'description',    minWidth: 160 },
-        { headerName: 'sellingPrice', field: 'sellingPrice',    minWidth: 160 },
-        { headerName: 'Stock Quantity', field: 'stockQty',    minWidth: 160 },
+        { headerName: 'Product Id', field: 'productId', width: 130 },
+        { headerName: 'Product Name', field: 'productName', minWidth: 160 },
+        { headerName: 'Sku', field: 'sku', minWidth: 160 },
+        { headerName: 'Description', field: 'description', minWidth: 180 },
         {
-          headerName: 'Actions',
-          width: 120,
-          cellRenderer: ActionCellRendererComponent,
-          cellRendererParams: {
-            colorMap: {
-              pending:   '#fb8c00',
-              shipped:   '#1976d2',
-              delivered: '#43a047',
-              cancelled: '#e53935',
-            },
-            uppercase: true,
-          },
-        }
+          headerName: 'Selling Price',
+          field: 'sellingPrice',
+          width: 140,
+          valueFormatter: (p) => `${Number(p.value ?? 0).toFixed(2)}`,
+        },
+        { headerName: 'Stock Quantity', field: 'stockQty', width: 140 },
       ],
- 
+      actions: [
+        {
+          label: 'Edit',
+          icon: '✏️',
+          color: 'primary',
+          callback: (row) => this.openEditDialog(row as Product),
+        },
+        {
+          label: 'Delete',
+          icon: '🗑️',
+          color: 'warn',
+          callback: (row) => this.deleteRow(row as Product),
+        },
+      ],
+      toolbarActionButton: {
+        label: '➕ Add Product',
+        title: 'Add Product',
+        variant: 'primary',
+        buttonClass: 'toolbar-btn',
+      },
+      onToolbarAction: () => this.openCreateDialog(),
       enableSearch: false,
       enableStatusBar: true,
       gridHeight: '600px',
     };
-  
   }
 
-  getProducts() {
-    this.isLoading = true;
-    const payload = { page: 1, pageSize: 20 }; // example payload
-    this.productsFascade.getProducts(payload);
+  deleteRow(row: Product): void {
+    const productId = row.productId;
+    if (productId === undefined || productId === null) {
+      return;
+    }
+
+    this.dialogService
+      .confirm({
+        title: 'Delete product',
+        message: `Are you sure you want to delete "${row.productName}"?`,
+        description: 'This action cannot be undone.',
+        confirmText: 'Delete',
+        cancelText: 'Cancel',
+        disableClose: true,
+      })
+      .pipe(
+        filter((confirmed) => confirmed),
+        switchMap(() => this.productsFascade.deleteProduct(productId))
+      )
+      .subscribe({
+        next: () => {
+          this.refreshGrid();
+        },
+        error: () => undefined,
+      });
   }
-  
+
+  openEditDialog(row: Product): void {
+    this.dialog
+      .open(ProductUpsertDialogComponent, {
+        width: '640px',
+        maxWidth: '95vw',
+        disableClose: true,
+        data: { product: row },
+      })
+      .afterClosed()
+      .pipe(
+        filter((updated): updated is Product => !!updated),
+        switchMap((updated) => this.productsFascade.createUpdateProduct(updated))
+      )
+      .subscribe({
+        next: () => {
+          this.refreshGrid();
+        },
+        error: () => undefined,
+      });
+  }
+
+  openCreateDialog(): void {
+    const emptyProduct: Product = {
+      productId: 0,
+      productName: '',
+      sku: '',
+      description: '',
+      sellingPrice: 0,
+      stockQty: 0,
+      status: 'active',
+    };
+
+    this.dialog
+      .open(ProductUpsertDialogComponent, {
+        width: '640px',
+        maxWidth: '95vw',
+        disableClose: true,
+        data: { product: emptyProduct },
+      })
+      .afterClosed()
+      .pipe(
+        filter((created): created is Product => !!created),
+        switchMap((created) => this.productsFascade.createUpdateProduct(created))
+      )
+      .subscribe({
+        next: () => {
+          this.refreshGrid();
+        },
+        error: () => undefined,
+      });
+  }
+
+  private refreshGrid(): void {
+    this.gridApi?.purgeInfiniteCache?.();
+  }
+
 }

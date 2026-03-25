@@ -14,7 +14,9 @@ export interface DropdownEditorParams {
   imports: [CommonModule, FormsModule],
   template: `
     <select #selectEl class="dropdown-editor" [(ngModel)]="selectedValue">
-      <option *ngFor="let opt of options" [value]="opt.value">{{ opt.label }}</option>
+      @for (opt of options; track $index) {
+        <option [value]="opt.value">{{ opt.label }}</option>
+      }
     </select>
   `,
   styles: [`

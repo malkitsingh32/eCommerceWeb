@@ -14,16 +14,15 @@ export interface LinkCellParams {
   standalone: true,
   imports: [CommonModule],
   template: `
-    <a
-      *ngIf="href; else btnLink"
-      [href]="href"
-      [target]="openInNewTab ? '_blank' : '_self'"
-      class="cell-link"
-    >{{ value }}</a>
-
-    <ng-template #btnLink>
+    @if (href) {
+      <a
+        [href]="href"
+        [target]="openInNewTab ? '_blank' : '_self'"
+        class="cell-link"
+      >{{ value }}</a>
+    } @else {
       <span class="cell-link" (click)="onClick()">{{ value }}</span>
-    </ng-template>
+    }
   `,
   styles: [`
     .cell-link {

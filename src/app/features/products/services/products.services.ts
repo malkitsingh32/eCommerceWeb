@@ -21,4 +21,12 @@ export class ProductsService {
         return this.api.post<Product>(API_ENDPOINTS.PRODUCTS.CREATEUPDATE, product);
     }
 
+    getCategories() {
+        return this.api.get<unknown>(API_ENDPOINTS.CATEGORY.GETCATEGORIES);
+    }
+
+    deleteProduct(productId: number | string) {
+        return this.api.delete<unknown>(`${API_ENDPOINTS.PRODUCTS.DELETE}/${productId}`);
+    }
+
 }

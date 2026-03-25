@@ -8,6 +8,8 @@ import {
   IServerSideDatasource,
   GridApi,
 } from 'ag-grid-community';
+import { GridLoadingOverlayComponent } from '../overlays/grid-loading-overlay.component';
+import { GridNoRowsOverlayComponent } from '../overlays/grid-no-rows-overlay.component';
 import { CustomHeaderComponent } from '../headers/custom-header.component';
 import { ActionCellRendererComponent } from '../cell-renderers/action-cell-renderer.component';
 
@@ -20,12 +22,13 @@ export interface GridAction {
   isDisabled?: (rowData: any) => boolean;
 }
 
-/**
- * rowModelType:
- *  'clientSide'  → pass [rowData] input (default, no extra setup)
- *  'infinite'    → scroll-triggered loading, provide infiniteDatasource
- *  'serverSide'  → server owns sort/filter/page, provide serverSideDatasource (enterprise only)
- */
+export interface ToolbarActionButtonConfig {
+  label: string;
+  title?: string;
+  variant?: 'primary' | 'secondary' | 'danger';
+  buttonClass?: string;
+}
+
 export type GridRowModelType = 'clientSide' | 'infinite' | 'serverSide';
 
 export interface GenericGridConfig {
@@ -34,29 +37,25 @@ export interface GenericGridConfig {
 
   // ── Row model ─────────────────────────────────────────────────
   rowModelType?: GridRowModelType;
-
-  /** Required when rowModelType = 'infinite' */
   infiniteDatasource?: IDatasource;
-
-  /** Required when rowModelType = 'serverSide' (enterprise) */
   serverSideDatasource?: IServerSideDatasource;
-
-  /** Rows per page/block for infinite + server-side */
   cacheBlockSize?: number;
 
   // ── Selection ─────────────────────────────────────────────────
   rowSelection?: 'single' | 'multiple';
 
-  // ── Pagination (page buttons) ─────────────────────────────────
+  // ── Pagination ────────────────────────────────────────────────
   pagination?: boolean;
   paginationPageSize?: number;
   paginationPageSizeSelector?: number[];
-
-  /**
-   * When true — pagination is disabled and the grid loads more rows
-   * as you scroll. Only valid with rowModelType 'infinite' or 'serverSide'.
-   */
   infiniteScroll?: boolean;
+
+  // ── Overlay / loader ──────────────────────────────────────────
+  /**
+   * Custom message shown in the no-rows overlay.
+   * Defaults to: 'Try adjusting your filters or search term.'
+   */
+  noRowsMessage?: string;
 
   // ── UI ────────────────────────────────────────────────────────
   sideBar?: boolean | SideBarDef;
@@ -64,23 +63,16 @@ export interface GenericGridConfig {
   actions?: GridAction[];
   enableExport?: boolean;
   enableSearch?: boolean;
+  toolbarActionButton?: ToolbarActionButtonConfig;
   gridHeight?: string;
   domLayout?: 'normal' | 'autoHeight' | 'print';
   suppressContextMenu?: boolean;
   animateRows?: boolean;
   rowGroupPanelShow?: 'always' | 'onlyWhenGrouping' | 'never';
   pivotPanelShow?: 'always' | 'onlyWhenPivoting' | 'never';
+  onToolbarAction?: () => void;
 
-  /**
-   * Callback fired once the grid is ready.
-   * Use this to store the GridApi reference inside your component.
-   *
-   * Example:
-   *   gridConfig: GenericGridConfig = {
-   *     onGridReady: (api) => this.gridApi = api,
-   *     ...
-   *   };
-   */
+  // ── Lifecycle ─────────────────────────────────────────────────
   onGridReady?: (api: GridApi) => void;
 }
 
@@ -121,16 +113,22 @@ export class GridConfigService {
       rowModelType,
 
       // ── Pagination vs infinite scroll ──────────────────────────
-      // If infiniteScroll=true we disable page buttons — the grid
-      // loads more rows automatically as the user scrolls.
       pagination: useInfiniteScroll ? false : (config.pagination ?? true),
       paginationPageSize: config.paginationPageSize ?? 20,
       paginationPageSizeSelector: config.paginationPageSizeSelector ?? [10, 20, 50, 100],
-
-      // Block size used by infinite + server-side row models
       cacheBlockSize: config.cacheBlockSize ?? config.paginationPageSize ?? 20,
 
-      // ── Other grid options ─────────────────────────────────────
+      // ── Custom overlays ─────────────────────────────────────────
+      // Loading overlay — shown when [loading]=true or grid is fetching
+      loadingOverlayComponent: GridLoadingOverlayComponent,
+
+      // No-rows overlay — shown when rowData is empty after load
+      noRowsOverlayComponent: GridNoRowsOverlayComponent,
+      noRowsOverlayComponentParams: {
+        message: config.noRowsMessage ?? 'Try adjusting your filters or search term.',
+      },
+
+      // ── Other grid options ──────────────────────────────────────
       rowSelection: config.rowSelection ?? 'multiple',
       animateRows: config.animateRows ?? true,
       suppressContextMenu: config.suppressContextMenu ?? false,
@@ -180,7 +178,9 @@ export class GridConfigService {
         filter: false,
         resizable: false,
         suppressMovable: true,
-        width: 130,
+        width: 92,
+        minWidth: 88,
+        maxWidth: 100,
         cellRenderer: ActionCellRendererComponent,
         cellRendererParams: { actions: config.actions },
       });

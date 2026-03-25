@@ -12,16 +12,25 @@ import { IHeaderParams } from 'ag-grid-community';
       <span class="header-label" (click)="onSortRequested($event)">
         {{ params.displayName }}
       </span>
-      <span *ngIf="params.enableSorting" class="sort-icon" (click)="onSortRequested($event)">
-        <span *ngIf="sortState === 'asc'">▲</span>
-        <span *ngIf="sortState === 'desc'">▼</span>
-        <span *ngIf="!sortState" class="sort-inactive">⇅</span>
-      </span>
-      <span
-        *ngIf="params.enableMenu"
-        class="menu-icon"
-        (click)="onMenuClicked($event)"
-      >☰</span>
+      @if (params.enableSorting) {
+        <span class="sort-icon" (click)="onSortRequested($event)">
+          @if (sortState === 'asc') {
+            <span>▲</span>
+          }
+          @if (sortState === 'desc') {
+            <span>▼</span>
+          }
+          @if (!sortState) {
+            <span class="sort-inactive">⇅</span>
+          }
+        </span>
+      }
+      @if (params.enableMenu) {
+        <span
+          class="menu-icon"
+          (click)="onMenuClicked($event)"
+        >☰</span>
+      }
     </div>
   `,
   styles: [`

@@ -22,14 +22,10 @@
   border: 1px solid #e6edf3;
   border-radius: 10px;
   background: #fff;
-  cursor: pointer;
+  color: #334155;
 }
 
 .menu-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  color: #334155;
   background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
   transition: all 0.2s ease;
 }
@@ -40,29 +36,19 @@
   box-shadow: 0 4px 14px rgba(15, 23, 36, 0.08);
 }
 
-.menu-btn:active {
-  transform: scale(0.98);
-}
-
 .menu-btn svg {
   width: 19px;
   height: 19px;
-  transition: transform 0.2s ease;
-}
-
-.menu-btn:hover svg {
-  transform: scale(1.05);
 }
 
 .user-btn {
-  border: 1px solid #e6edf3;
+  border-color: #e6edf3;
   background: #fff;
   border-radius: 999px;
   padding: 0.25rem 0.65rem 0.25rem 0.25rem;
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: 0.45rem;
-  cursor: pointer;
 }
 
 .avatar {

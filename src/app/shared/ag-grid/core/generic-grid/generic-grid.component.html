@@ -3,12 +3,14 @@
     [title]="title"
     [enableSearch]="toolbarSearch"
     [enableExport]="toolbarExport"
+    [actionButton]="toolbarActionButton"
     (searchChange)="onSearchChange($event)"
     (exportCsv)="exportCsv()"
     (exportExcel)="exportExcel()"
     (clearFilters)="clearFilters()"
     (refresh)="refreshGrid()"
     (autoSize)="autoSizeAllColumns()"
+    (actionClick)="onToolbarAction()"
   />
 
   <ag-grid-angular

@@ -5,12 +5,26 @@ import { Router, RouterModule } from '@angular/router';
 import { Button } from '../../../../shared/components/button/button';
 import { AuthFacade } from '../../fascade/auth.fascade';
 import { strongPasswordValidator } from '../../../../shared/validators/password-validator';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatCardModule } from '@angular/material/card';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, Button, RouterModule]
+  imports: [
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    Button,
+    RouterModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatCheckboxModule,
+    MatCardModule,
+  ]
 })
 export class LoginComponent {
   loginForm: FormGroup;

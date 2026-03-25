@@ -1,6 +1,7 @@
-<header class="app-header">
+<mat-toolbar class="app-header">
   <div class="header-left">
     <button
+      mat-icon-button
       type="button"
       class="menu-btn"
       (click)="onToggleSidebar()"
@@ -26,10 +27,10 @@
   </div>
 
   <div class="header-right">
-    <button type="button" class="action-btn" aria-label="Notifications">🔔</button>
-    <button type="button" class="user-btn" aria-label="User account">
+    <button mat-icon-button type="button" class="action-btn" aria-label="Notifications">🔔</button>
+    <button mat-stroked-button type="button" class="user-btn" aria-label="User account">
       <span class="avatar">A</span>
       <span class="name">Welcome</span>
     </button>
   </div>
-</header>
+</mat-toolbar>

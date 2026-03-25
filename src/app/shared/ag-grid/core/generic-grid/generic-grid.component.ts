@@ -66,6 +66,7 @@ export class GenericGridComponent implements OnChanges {
   get gridHeight(): string  { return this.config?.gridHeight  ?? '500px'; }
   get toolbarSearch(): boolean { return this.config?.enableSearch ?? true; }
   get toolbarExport(): boolean { return this.config?.enableExport ?? true; }
+  get toolbarActionButton() { return this.config?.toolbarActionButton; }
 
   constructor(private gridConfigService: GridConfigService) {}
 
@@ -151,6 +152,10 @@ export class GenericGridComponent implements OnChanges {
 
   autoSizeAllColumns(): void {
     this.gridApi?.autoSizeAllColumns();
+  }
+
+  onToolbarAction(): void {
+    this.config?.onToolbarAction?.();
   }
 
   // ─── Public API (accessible via @ViewChild) ───────────────────────────────

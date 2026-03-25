@@ -3,18 +3,30 @@ import { AuthService } from '../../services/auth.service';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { Button } from "../../../../shared/components/button/button";
+import { Button } from '../../../../shared/components/button/button';
 import { strongPasswordValidator } from '../../../../shared/validators/password-validator';
 import { confirmPasswordValidator } from '../../../../shared/validators/confirm-password-validator';
 import { phoneValidator } from '../../../../shared/validators/phone-validator';
 import { RegisterRequest } from '../../models/register.model';
 import { AuthFacade } from '../../fascade/auth.fascade';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatCardModule } from '@angular/material/card';
 
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.scss'],
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, Button,RouterModule],
+  imports: [
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    Button,
+    RouterModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatCardModule,
+  ],
   providers: [AuthService]
 })
 export class RegisterComponent {

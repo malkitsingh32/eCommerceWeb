@@ -1,0 +1,41 @@
+<h2 mat-dialog-title class="dialog-title">
+  {{ data.title }}
+
+  @if (data.showCloseButton !== false) {
+    <app-button
+      materialStyle="icon"
+      type="button"
+      variant="secondary"
+      buttonClass="dialog-close"
+      [fullWidth]="false"
+      label="✕"
+      ariaLabel="Close dialog"
+      (clicked)="close()"
+    ></app-button>
+  }
+</h2>
+
+<mat-dialog-content>
+  @if (data.message) {
+    <p class="dialog-message">{{ data.message }}</p>
+  }
+
+  @if (data.description) {
+    <p class="dialog-description">{{ data.description }}</p>
+  }
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  @for (action of actions; track action.id) {
+    <app-button
+      type="button"
+      [label]="action.label"
+      [variant]="getActionVariant(action)"
+      [disabled]="action.disabled ?? false"
+      [fullWidth]="false"
+      [materialStyle]="action.variant === 'stroked' ? 'stroked' : action.variant === 'raised' ? 'raised' : 'flat'"
+      [buttonClass]="action.variant === 'stroked' ? 'dialog-stroked' : action.variant === 'raised' ? 'dialog-raised' : 'dialog-flat'"
+      (clicked)="chooseAction(action)"
+    ></app-button>
+  }
+</mat-dialog-actions>

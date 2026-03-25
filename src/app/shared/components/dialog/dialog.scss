@@ -1,0 +1,30 @@
+:host {
+  display: block;
+}
+
+.dialog-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 0;
+}
+
+.dialog-message,
+.dialog-description {
+  margin: 0 0 10px;
+  line-height: 1.45;
+}
+
+.dialog-description {
+  color: #5f6368;
+}
+
+mat-dialog-actions {
+  padding-top: 8px;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  gap: 8px;
+  flex-wrap: nowrap;
+}

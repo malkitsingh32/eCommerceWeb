@@ -1,70 +1,90 @@
-import { inject, Injectable } from "@angular/core";
-import { ProductStore } from "../stores/products.store";
-import { Router } from "@angular/router";
-import { BaseSnackbarService } from "../../../core/services/base-snackbar.service";
-import { ProductsService } from "../services/products.services";
-import { Product } from "../models/products.model";
-import { GridDatasourceService } from "../../../shared/ag-grid/config/grid-datasource.service";
+import { Injectable, inject } from '@angular/core';
+import { finalize, map, Observable, tap } from 'rxjs';
+import { ProductStore } from '../stores/products.store';
+import { BaseSnackbarService } from '../../../core/services/base-snackbar.service';
+import { ProductsService } from '../services/products.services';
+import { Product } from '../models/products.model';
+import { ApiResponse as GridApiResponse, GridRequest } from '../../../shared/ag-grid/config/grid-request.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProductsFascade {
+    private readonly productsService = inject(ProductsService);
+    private readonly store = inject(ProductStore);
+    private readonly snakbar = inject(BaseSnackbarService);
 
-    constructor(private productsService: ProductsService, 
-        private store: ProductStore,
-        private router: Router,
-        private snakbar: BaseSnackbarService) {
-    
-    }
-
-    getProducts(payload: any) {
+    getProducts(payload: GridRequest): Observable<GridApiResponse<Product>> {
         this.store.loading.set(true);
-        this.productsService.getProducts(payload).subscribe({
-            next: (res) => {
-                if (res.succeeded && res.data) {
-                    this.store.product.set(res.data as any);
-                    return;
-                }
-            },
-            error: (err) => {
-                this.store.loading.set(false);
-                this.snakbar.error('Failed to fetch products.');
-            }
-        }); 
+
+        return this.productsService.getProducts(payload).pipe(
+            map((res) => {
+                const rows = res.data?.productList ?? [];
+                const total = res.data?.totalRecords ?? rows.length;
+
+                this.store.products.set(rows);
+                this.store.totalRecords.set(total);
+
+                return {
+                    data: rows,
+                    total,
+                };
+            }),
+            tap({
+                error: () => this.snakbar.error('Failed to fetch products.'),
+            }),
+            finalize(() => this.store.loading.set(false))
+        );
     }
 
-    getProductById(id: string) { 
+    getProductById(id: string | number): Observable<Product> {
         this.store.loading.set(true);
-        this.productsService.getProductById(id).subscribe({
-            next: (res) => {
-                if (res.succeeded && res.data) {
-                    this.store.product.set(res.data as any);
-                    return;
-                }
-            },
-            error: (err) => {
-                this.store.loading.set(false);
-                this.snakbar.error('Failed to fetch product details.');
-            }
-        }); 
+
+        return this.productsService.getProductById(String(id)).pipe(
+            map((res) => res.data),
+            tap({
+                next: (product) => {
+                    this.store.product.set(product);
+                    this.store.selectedProduct.set(product);
+                },
+                error: () => this.snakbar.error('Failed to fetch product details.'),
+            }),
+            finalize(() => this.store.loading.set(false))
+        );
     }
-     createUpdateProduct(product: Product) {
-        this.store.loading.set(true); 
-        this.productsService.createProduct(product).subscribe({
-            next: (res) => {
-                if (res.succeeded && res.data) {
+
+    createUpdateProduct(product: Product): Observable<Product> {
+        this.store.loading.set(true);
+
+        return this.productsService.createProduct(product).pipe(
+            map((res) => res.data),
+            tap({
+                next: (saved) => {
+                    this.store.product.set(saved);
+                    this.store.selectedProduct.set(saved);
                     this.snakbar.success('Product saved successfully!');
-                    this.router.navigate(['/products']);
-                    return;
-                }
-                this.snakbar.error(res.messages[0] || 'Failed to save product.');
-            },
-            error: (err) => {
-                this.store.loading.set(false);  
-                this.snakbar.error('Failed to save product.');
-            }
-        });
-    }  
-    
+                },
+                error: () => this.snakbar.error('Failed to save product.'),
+            }),
+            finalize(() => this.store.loading.set(false))
+        );
+    }
+
+    deleteProduct(productId: number | string): Observable<unknown> {
+        this.store.loading.set(true);
+
+        return this.productsService.deleteProduct(productId).pipe(
+            tap({
+                next: () => {
+                    this.store.products.update((rows) =>
+                        rows.filter((row) => String(row.productId) !== String(productId))
+                    );
+                    this.store.totalRecords.update((total) => Math.max(0, total - 1));
+                    this.snakbar.success('Product deleted successfully.');
+                },
+                error: () => this.snakbar.error('Failed to delete product.'),
+            }),
+            finalize(() => this.store.loading.set(false))
+        );
+    }
 }
