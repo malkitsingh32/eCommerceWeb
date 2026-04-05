@@ -1,6 +1,6 @@
 {
   "/api": {
-    "target": "https://localhost:7088",
+    "target": "https://ecommerceapi-ynh0.onrender.com",
     "secure": false,
     "logLevel": "debug",
     "changeOrigin": true
