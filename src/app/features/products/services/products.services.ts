@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { BaseHttpService } from '../../../core/services/base-http.service';
 import { API_ENDPOINTS } from '../../../core/constants/api-endpoints';
 import { Product, ProductListResponse } from '../models/products.model';
+import { GridRequest } from '../../../shared/ag-grid/config/grid-request.model';
 
 @Injectable({
     providedIn: 'root'
@@ -9,7 +10,7 @@ import { Product, ProductListResponse } from '../models/products.model';
 export class ProductsService {
     constructor(private api: BaseHttpService) {}
 
-    getProducts(payload: any) {
+    getProducts(payload: GridRequest) {
         return this.api.post<ProductListResponse>(API_ENDPOINTS.PRODUCTS.GETALL, payload);
     }
 

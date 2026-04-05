@@ -56,7 +56,7 @@ export class Products implements OnInit {
           label: 'Edit',
           icon: '✏️',
           color: 'primary',
-          callback: (row) => this.openEditDialog(row as Product),
+          callback: (row) => this.openUpsertDialog(row as Product),
         },
         {
           label: 'Delete',
@@ -71,7 +71,7 @@ export class Products implements OnInit {
         variant: 'primary',
         buttonClass: 'toolbar-btn',
       },
-      onToolbarAction: () => this.openCreateDialog(),
+      onToolbarAction: () => this.openUpsertDialog(),
       enableSearch: false,
       enableStatusBar: true,
       gridHeight: '600px',
@@ -105,29 +105,8 @@ export class Products implements OnInit {
       });
   }
 
-  openEditDialog(row: Product): void {
-    this.dialog
-      .open(ProductUpsertDialogComponent, {
-        width: '640px',
-        maxWidth: '95vw',
-        disableClose: true,
-        data: { product: row },
-      })
-      .afterClosed()
-      .pipe(
-        filter((updated): updated is Product => !!updated),
-        switchMap((updated) => this.productsFascade.createUpdateProduct(updated))
-      )
-      .subscribe({
-        next: () => {
-          this.refreshGrid();
-        },
-        error: () => undefined,
-      });
-  }
-
-  openCreateDialog(): void {
-    const emptyProduct: Product = {
+  private openUpsertDialog(product?: Product): void {
+    const productToEdit: Product = product ?? {
       productId: 0,
       productName: '',
       sku: '',
@@ -142,12 +121,12 @@ export class Products implements OnInit {
         width: '640px',
         maxWidth: '95vw',
         disableClose: true,
-        data: { product: emptyProduct },
+        data: { product: productToEdit },
       })
       .afterClosed()
       .pipe(
-        filter((created): created is Product => !!created),
-        switchMap((created) => this.productsFascade.createUpdateProduct(created))
+        filter((upserted): upserted is Product => !!upserted),
+        switchMap((upserted) => this.productsFascade.createUpdateProduct(upserted))
       )
       .subscribe({
         next: () => {

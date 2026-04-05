@@ -53,16 +53,16 @@ export class ProductsFascade {
         );
     }
 
-    createUpdateProduct(product: Product): Observable<Product> {
+    createUpdateProduct(product: Product) {
         this.store.loading.set(true);
 
         return this.productsService.createProduct(product).pipe(
-            map((res) => res.data),
+            map((res) => res),
             tap({
                 next: (saved) => {
-                    this.store.product.set(saved);
-                    this.store.selectedProduct.set(saved);
-                    this.snakbar.success('Product saved successfully!');
+                    this.store.product.set(saved.data);
+                    this.store.selectedProduct.set(saved.data);
+                    this.snakbar.success(saved.messages[0]);
                 },
                 error: () => this.snakbar.error('Failed to save product.'),
             }),
