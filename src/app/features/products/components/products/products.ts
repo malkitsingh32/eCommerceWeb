@@ -74,7 +74,7 @@ export class Products implements OnInit {
       onToolbarAction: () => this.openUpsertDialog(),
       enableSearch: false,
       enableStatusBar: true,
-      gridHeight: '600px',
+      gridHeight: '100%',
     };
   }
 
